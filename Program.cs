@@ -47,7 +47,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.Use(async (context, next) =>
+{
+    if (!context.Request.IsHttps)
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        await context.Response.WriteAsync("HTTPS is required");
+    }
+    else
+    {
+        await next(context);
+    }
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
