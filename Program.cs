@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TodoApi.Models;
+using TodoApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,8 @@ builder.Services.Configure<JwtOptions>(
 
 builder.Services.Configure<LoginOptions>(
     builder.Configuration.GetSection(LoginOptions.Login));
+
+builder.Services.AddScoped<ITodoService, TodoService>();
 
 var app = builder.Build();
 
